@@ -24,7 +24,7 @@ export default function QandA(props) {
                 return ans
             })
         })
-        props.updateResponses(props.question,selectedAnswer.givenAnswer)
+        props.updateResponses(selectedAnswer)
     }, [selectedAnswer])
     return (
         <div className="flex flex-col gap-5 border-b-2 border-b-[#DBDEF0]  py-5">
