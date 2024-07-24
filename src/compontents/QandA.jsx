@@ -3,8 +3,9 @@ import Answer from "./Answer";
 import { useEffect, useState } from "react";
 
 export default function QandA(props) {
-    const [selectedAnswer, setSelectedAnswer] = useState({id:nanoid(),question:props.question, givenAnswer:''})
+    const [selectedAnswer, setSelectedAnswer] = useState({id:nanoid(),question:props.question, givenAnswer:'',correct:false})
     const [answers, setAnswers] = useState(() => allOptions())
+    //see if you can handle this in App.jsx
     function allOptions() {
         return props.answers.map((el) => ({ value: el, isSelected: false, id: nanoid() }))
     }
