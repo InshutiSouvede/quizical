@@ -3,19 +3,20 @@ import Answer from "./Answer";
 import { useEffect, useState } from "react";
 
 export default function QandA(props) {
-    const [selectedAnswer, setSelectedAnswer] = useState('')
+    const [selectedAnswer, setSelectedAnswer] = useState({id:nanoid(),question:props.question, givenAnswer:''})
     const [answers, setAnswers] = useState(() => allOptions())
     function allOptions() {
         return props.answers.map((el) => ({ value: el, isSelected: false, id: nanoid() }))
     }
     function select(event) {
         const ans = event.target.textContent
-        setSelectedAnswer(ans)
+        setSelectedAnswer(prev=>({...prev,givenAnswer:ans}))
     }
     useEffect(() => {
+        console.log("Your answer",selectedAnswer)
         setAnswers(prevAnswers => {
             return prevAnswers.map((ans) => {
-                if (ans.value !== selectedAnswer) {
+                if (ans.value !== selectedAnswer.givenAnswer) {
                     ans.isSelected = false
                 } else {
                     ans.isSelected = true
@@ -23,7 +24,7 @@ export default function QandA(props) {
                 return ans
             })
         })
-
+        props.updateResponses(props.question,selectedAnswer.givenAnswer)
     }, [selectedAnswer])
     return (
         <div className="flex flex-col gap-5 border-b-2 border-b-[#DBDEF0]  py-5">
