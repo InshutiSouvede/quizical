@@ -2,38 +2,38 @@ import { nanoid } from "nanoid";
 import Answer from "./Answer";
 import { useEffect, useState } from "react";
 
-export default function QandA(props){
+export default function QandA(props) {
     const [selectedAnswer, setSelectedAnswer] = useState('')
-    const [answers,setAnswers] = useState(()=>allOptions())
-    function allOptions(){
-        return props.answers.map((el)=>({value:el,isSelected:false,id: nanoid()}))
+    const [answers, setAnswers] = useState(() => allOptions())
+    function allOptions() {
+        return props.answers.map((el) => ({ value: el, isSelected: false, id: nanoid() }))
     }
-    function select(event){
+    function select(event) {
         const ans = event.target.textContent
         setSelectedAnswer(ans)
     }
-    useEffect(()=>{
-        setAnswers(prevAnswers=>{
-            return prevAnswers.map((ans)=>{
-                if(ans.value!==selectedAnswer){
+    useEffect(() => {
+        setAnswers(prevAnswers => {
+            return prevAnswers.map((ans) => {
+                if (ans.value !== selectedAnswer) {
                     ans.isSelected = false
-                }else{                
+                } else {
                     ans.isSelected = true
                 }
                 return ans
             })
         })
-        
-    },[selectedAnswer])
+
+    }, [selectedAnswer])
     return (
-        <div className="flex flex-col gap-5 border-b-2 border-b-[#DBDEF0] py-5">
-        <h1 className="font-semibold text-2xl text-[#293264]">{props.question}</h1>
-        <div className="flex gap-5 flex-wrap">
-        {
-            answers.map((el)=><Answer key={el.id} selected = {el.isSelected} value={el.value} handleClick={(event)=>select(event)}/>)
-        }
-        </div>
-        
+        <div className="flex flex-col gap-5 border-b-2 border-b-[#DBDEF0] w-full py-5">
+            <h1 className="font-semibold text-2xl text-[#293264]">{props.question}</h1>
+            <div className="flex gap-5 flex-wrap">
+                {
+                    answers.map((el) => <Answer key={el.id} selected={el.isSelected} value={el.value} handleClick={(event) => select(event)} />)
+                }
+            </div>
+
         </div>
     )
 }
