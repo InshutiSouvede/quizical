@@ -26,7 +26,7 @@ export default function QandA(props) {
 
     }, [selectedAnswer])
     return (
-        <div className="flex flex-col gap-5 border-b-2 border-b-[#DBDEF0] w-full py-5">
+        <div className="flex flex-col gap-5 border-b-2 border-b-[#DBDEF0]  py-5">
             <h1 className="font-semibold text-2xl text-[#293264]">{props.question}</h1>
             <div className="flex gap-5 flex-wrap">
                 {
