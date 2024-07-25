@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 
 export default function QandA(props) {
     const [selectedAnswer, setSelectedAnswer] = useState({id:nanoid(),question:props.questionData.question, givenAnswer:'',correct:false})
-    const [answers, setAnswers] = useState(() => allOptions())
+    const [answers, setAnswers] = useState(() => allAnswerOptions())
     //see if you can handle this in App.jsx
-    function allOptions() {
+    function allAnswerOptions() {
         return props.questionData.allAnswers.map((el) => {
             if(el==props.questionData.correctAnswer){
                 return { value: el, isSelected: false, isCorrect:true, id: nanoid() }

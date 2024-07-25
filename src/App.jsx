@@ -1,15 +1,13 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import QandA from './compontents/QandA'
 import quizData from './data'
 function App() {
   const [done,setDone] = useState(false)
-  const [data,setData] = useState(()=>initialData())
+  const [data,setData] = useState([])
 
-  console.log("This is what you start with",data)
-
-  function initialData(){
-    return quizData.results.map((res)=>{      
+  function initialData(data){
+    return data.results.map((res)=>{      
       const index = Math.floor(Math.random()*3)
       const correctAnswer = res.correct_answer
 
@@ -24,6 +22,22 @@ function App() {
     setDone(true)
   }
   const qandAs = data.map((data)=><QandA done={done} questionData= {data} />)
+  useEffect(()=>{
+    async function getData(){
+      try {
+        const res = await fetch("https://opentdb.com/api.php?amount=5&category=18")
+        const data = await res.json()
+        console.log("Data from API",data)
+        const results = initialData(data)
+        console.log("initial data",initialData(data))
+        setData(results)
+      } catch (error) {
+        console.log(error.message)
+      }
+      
+    }
+    getData()
+  },[])
   return (
     <div className='flex flex-col w-3/5 p-10 mt-20 m-auto border '>
       {qandAs}
