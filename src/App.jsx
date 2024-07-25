@@ -27,6 +27,7 @@ function App() {
   function startQuiz(){
     setDone(false)
     setStarted(true)
+    setAnswersCount(0)
   }
   function exitQuiz(){
     setDone(false)
