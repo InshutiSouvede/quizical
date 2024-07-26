@@ -3,7 +3,6 @@ import Answer from "./Answer";
 import { useEffect, useState } from "react";
 
 export default function QandA(props) {
-    const [selectedAnswer, setSelectedAnswer] = useState({id:nanoid(),question:props.questionData.question, givenAnswer:'',correct:false})
     const [answers, setAnswers] = useState(() => allAnswerOptions())
     const [isAnswered, setIsAnswered] = useState(false)
     //see if you can handle this in App.jsx
@@ -17,14 +16,10 @@ export default function QandA(props) {
     }
     function select(event) {
         setIsAnswered(true)
-        const ans = event.target.textContent
-        setSelectedAnswer(prev=>({...prev,givenAnswer:ans}))
-    }
-    useEffect(() => {
-        // console.log("Your answer",selectedAnswer)
+        const givenAns = event.target.textContent
         setAnswers(prevAnswers => {
             return prevAnswers.map((ans) => {
-                if (ans.value !== selectedAnswer.givenAnswer) {
+                if (ans.value !== givenAns) {
                     ans.isSelected = false
                 } else {
                     ans.isSelected = true
@@ -32,8 +27,7 @@ export default function QandA(props) {
                 return ans
             })
         })
-        // props.updateResponses(selectedAnswer)
-    }, [selectedAnswer])
+    }
     useEffect(()=>{
         console.log("Answered a new question",isAnswered);
         if(isAnswered){

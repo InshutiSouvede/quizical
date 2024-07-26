@@ -5,6 +5,7 @@ function App() {
   const [done,setDone] = useState(false)
   const [quizData,setQuizData] = useState([])
   const [started,setStarted] = useState(false)
+  const [getNewQuiz,setGetNewQuiz] = useState(false)
   const [buttonDisabled,setButtonDisabled] = useState(true)
   const [answersCount,setAnswersCount] = useState(0)
 
@@ -21,11 +22,6 @@ function App() {
   }
 
   function checkAnswers(){
-    // if(done){
-    //   setButtonDisabled(true)
-    // }else{
-    //   setButtonDisabled(false)
-    // }
     setDone(prev=>!prev)
   }
   function startQuiz(){
@@ -36,6 +32,12 @@ function App() {
   function exitQuiz(){
     setDone(false)
     setStarted(false)    
+  }
+  function newQuiz(){
+    setGetNewQuiz(true)
+    setDone(false)
+    setStarted(true)
+    setAnswersCount(0)
   }
     useEffect(()=>{
     async function getData(){
@@ -57,7 +59,7 @@ function App() {
     
     return ()=>{
     }
-  },[started])
+  },[started,getNewQuiz])
   useEffect(()=>{
     if(answersCount===5){
       setButtonDisabled(false)
@@ -83,8 +85,8 @@ function App() {
       className={`${buttonDisabled?"bg-slate-300":"bg-[#4D5B9E]"} rounded-lg px-5 py-2 m-auto my-5 text-white font-semibold`}
       >{done?"Repeat Quiz":"Check answers"}</button>
       
-      {done&&<button disabled={buttonDisabled} onClick={checkAnswers} 
-      className={`${buttonDisabled?"bg-slate-300":"bg-[#4D5B9E]"} rounded-lg px-5 py-2 m-auto my-5 text-white font-semibold`}
+      {done&&<button  onClick={newQuiz} 
+      className="border-2 rounded-lg px-5 py-2 m-auto my-5 text-[#4D5B9E] font-semibold"
       >NewQuiz</button>}
       
       <button onClick={exitQuiz} className="border-2 rounded-lg px-5 py-2 m-auto my-5 text-[#4D5B9E] font-semibold">Exit</button>
