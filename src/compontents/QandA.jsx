@@ -3,26 +3,28 @@ import Answer from "./Answer";
 import { useEffect, useState } from "react";
 
 export default function QandA(props) {
-    const [answers, setAnswers] = useState(() => allAnswerOptions())
+    
+    const [answers, setAnswers] = useState(()=>allAnswerOptions())
     const [isAnswered, setIsAnswered] = useState(false)
     //see if you can handle this in App.jsx
     function allAnswerOptions() {
-        return props.questionData.allAnswers.map((el) => {
-            if(el==props.questionData.correctAnswer){
-                return { value: el, isSelected: false, isCorrect:true, id: nanoid() }
-            }            
-            return { value: el, isSelected: false, isCorrect:false, id: nanoid() }
-        })
+        console.log("re-doing the answers again using: ",props.questionData.allAnswers)
+        return props.questionData.allAnswers
     }
+
     function select(event) {
         setIsAnswered(true)
         const givenAns = event.target.textContent
         setAnswers(prevAnswers => {
+            console.log("I am updating some answers")
             return prevAnswers.map((ans) => {
                 if (ans.value !== givenAns) {
                     ans.isSelected = false
+                    console.log("You did not select ",ans)
                 } else {
+                    
                     ans.isSelected = true
+                    console.log("You selected ",ans)
                 }
                 return ans
             })
