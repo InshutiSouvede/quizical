@@ -21,8 +21,12 @@ function App() {
   }
 
   function checkAnswers(){
-    setDone(true)
-    setButtonDisabled(true)
+    // if(done){
+    //   setButtonDisabled(true)
+    // }else{
+    //   setButtonDisabled(false)
+    // }
+    setDone(prev=>!prev)
   }
   function startQuiz(){
     setDone(false)
@@ -72,10 +76,18 @@ function App() {
     <div className='flex flex-col w-3/5 p-10 mt-20 m-auto border '>
       {qandAs}
       <div className="flex justify-between">
+
+      
+
       <button disabled={buttonDisabled} onClick={checkAnswers} 
       className={`${buttonDisabled?"bg-slate-300":"bg-[#4D5B9E]"} rounded-lg px-5 py-2 m-auto my-5 text-white font-semibold`}
-      >Check answers</button>
-      <button onClick={exitQuiz} className="bg-[#a4a5a9] rounded-lg px-5 py-2 m-auto my-5 text-[#4D5B9E] font-semibold">Exit</button>
+      >{done?"Repeat Quiz":"Check answers"}</button>
+      
+      {done&&<button disabled={buttonDisabled} onClick={checkAnswers} 
+      className={`${buttonDisabled?"bg-slate-300":"bg-[#4D5B9E]"} rounded-lg px-5 py-2 m-auto my-5 text-white font-semibold`}
+      >NewQuiz</button>}
+      
+      <button onClick={exitQuiz} className="border-2 rounded-lg px-5 py-2 m-auto my-5 text-[#4D5B9E] font-semibold">Exit</button>
     
       </div>
     </div>}
