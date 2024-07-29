@@ -5,11 +5,13 @@ import { nanoid } from 'nanoid'
 function App() {
   const [done, setDone] = useState(false)
   const [quizData, setQuizData] = useState([])
+
   const [started, setStarted] = useState(false)
   const [getNewQuiz, setGetNewQuiz] = useState(false)
   const [buttonDisabled, setButtonDisabled] = useState(true)
   const [answersCount, setAnswersCount] = useState(0)
 
+  const [answeredQuestions, setAnsweredQuestions] = useState({})
 
   function initialData(data) {
     return data.results.map((res) => {
@@ -24,10 +26,7 @@ function App() {
         }            
         return { value: el, isSelected: false, isCorrect:false, id: nanoid() }
       })
-      console.log("Here are formated answers", formatedAnswers)
-      // setAnswers(formatedAnswers)
-
-      return {id:nanoid(), question: res.question, correctAnswer: correctAnswer, allAnswers: formatedAnswers }
+      return {id:nanoid(), question: res.question, correctAnswer: correctAnswer, allAnswers: formatedAnswers,questionAnswered:false }
     })
   }
   
@@ -51,12 +50,41 @@ function App() {
     setAnswersCount(0)
     setButtonDisabled(true)
   }
+  function updateQuestionData(id,givenAns){
+    if(!answeredQuestions[id]){
+      setAnswersCount(prev=>prev+1)
+      setAnsweredQuestions(prev=>({...prev,[id]:1}))
+      if(answersCount===4){
+        setButtonDisabled(false)
+      }
+    }
+    setQuizData(prev=>{
+      
+      return prev.map((el)=>{
+        
+        if(el.id==id){
+          
+          if(!el.questionAnswered){
+            el.questionAnswered = true            
+          }
+          el.allAnswers = el.allAnswers.map((ans) => {
+            if (ans.value !== givenAns) {
+                ans.isSelected = false
+            } else {
+                ans.isSelected = true
+            }
+            return ans
+        })
+        }
+        return el
+      })
+    })
+  }
   useEffect(() => {
     async function getData() {
       try {
         const res = await fetch("https://opentdb.com/api.php?amount=5&category=18")
         const data = await res.json()
-        console.log("Data from API", data)
         const results = initialData(data)
         console.log("initial data", initialData(data))
         setQuizData(results)
@@ -69,16 +97,11 @@ function App() {
       getData()
     }
     return () => {
+      setQuizData([])
     }
   }, [started, getNewQuiz])
 
-  useEffect(() => {
-    if (answersCount === 5) {
-      setButtonDisabled(false)
-    }
-    console.log("You have answered", answersCount, "questions")
-  }, [answersCount])
-  const qandAs = quizData.map((data) => <QandA key = {data.id}  setAnswersCount={setAnswersCount} done={done} questionData={data} />)
+  const qandAs = quizData.map((data) => <QandA key = {data.id}  setAnswersCount={setAnswersCount} done={done} questionData={data} updateQuestionData={updateQuestionData} />)
 
   return (
     <>
