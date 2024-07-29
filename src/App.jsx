@@ -37,6 +37,7 @@ function App() {
     setDone(false)
     setStarted(true)
     setAnswersCount(0)
+    setAnsweredQuestions({})
     setButtonDisabled(true)
   }
   function exitQuiz() {
@@ -48,6 +49,7 @@ function App() {
     setDone(false)
     setStarted(true)
     setAnswersCount(0)
+    setAnsweredQuestions({})
     setButtonDisabled(true)
   }
   function updateQuestionData(id,givenAns){
