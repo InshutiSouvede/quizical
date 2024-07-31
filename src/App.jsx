@@ -83,9 +83,10 @@ function App() {
     })
   }
   useEffect(() => {
+    const controller = new AbortController();
     async function getData() {
       try {
-        const res = await fetch("https://opentdb.com/api.php?amount=5&category=18")
+        const res = await fetch("https://opentdb.com/api.php?amount=5&category=18",{signal:controller.signal})
         const data = await res.json()
         const results = initialData(data)
         console.log("initial data", initialData(data))
@@ -99,6 +100,7 @@ function App() {
       getData()
     }
     return () => {
+      controller.abort()
       setQuizData([])
     }
   }, [started, getNewQuiz])
