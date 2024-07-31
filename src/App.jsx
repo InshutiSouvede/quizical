@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid'
 function App() {
   const [done, setDone] = useState(false)
   const [quizData, setQuizData] = useState([])
-
+  const [loading, setLoading] = useState(true)
   const [started, setStarted] = useState(false)
   const [getNewQuiz, setGetNewQuiz] = useState(false)
   const [buttonDisabled, setButtonDisabled] = useState(true)
@@ -39,6 +39,7 @@ function App() {
     setAnswersCount(0)
     setAnsweredQuestions({})
     setButtonDisabled(true)
+    setLoading(true)
   }
   function exitQuiz() {
     setDone(false)
@@ -51,6 +52,7 @@ function App() {
     setAnswersCount(0)
     setAnsweredQuestions({})
     setButtonDisabled(true)
+    setLoading(true)
   }
   function updateQuestionData(id,givenAns){
     if(!answeredQuestions[id]){
@@ -91,8 +93,10 @@ function App() {
         const results = initialData(data)
         console.log("initial data", initialData(data))
         setQuizData(results)
+        setLoading(false)
       } catch (error) {
         console.log(error.message)
+        setLoading(false)
       }
 
     }
@@ -115,6 +119,7 @@ function App() {
         <button onClick={startQuiz} className="bg-[#4D5B9E] rounded-lg px-5 py-2 m-auto my-5 text-white font-semibold">Start quiz</button>
       </div>) :
         <div className='flex flex-col w-3/5 p-10 mt-20 m-auto border '>
+          {loading&&<h3 className='text-3xl font-semibold text-[#293264]'>Loading ...</h3>}
           {qandAs}
           <div className="flex justify-between">
 
